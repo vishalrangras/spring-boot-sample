@@ -2,16 +2,12 @@ package com.lithan.sb.exceptions;
 
 public class RoleNotFoundException extends RuntimeException{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6946942949342340559L;
-
+	private String roleCode;
+	
 	public RoleNotFoundException(String roleCode) {
 		this.roleCode = roleCode;
 	}
-	
-	private String roleCode;
 	
 	@Override
 	public String getMessage() {
@@ -23,5 +19,4 @@ public class RoleNotFoundException extends RuntimeException{
 		sb.append("Acceptable values are: 'Admin', 'User' and 'Moderator'");
 		return sb.toString();
 	}
-	
 }

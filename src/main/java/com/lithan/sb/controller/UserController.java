@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lithan.sb.dto.RegistrationFormDto;
 import com.lithan.sb.model.User;
-import com.lithan.sb.service.RegistrationService;
+import com.lithan.sb.service.UserService;
 
 @RestController
 @RequestMapping(value = "/user")
-public class RegistrationController {
+public class UserController {
 	
 	@Autowired
-	RegistrationService registrationService;
+	UserService registrationService;
 	
 	@PostMapping("/save")
 	public String registerUser(@RequestBody RegistrationFormDto registrationFormDto) {

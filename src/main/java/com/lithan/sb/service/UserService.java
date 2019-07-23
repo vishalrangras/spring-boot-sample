@@ -22,7 +22,7 @@ import com.lithan.sb.repository.UserRepository;
 
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
-public class RegistrationService {
+public class UserService {
 	
 	@Autowired
 	UserRepository userRepository;
@@ -63,14 +63,12 @@ public class RegistrationService {
 		userRepository.save(user);
 		
 		Address address = null;
-		
 		Optional<Address> addressOptional = addressRepository.findById(registrationFormDto.getAddressId());
 		if(addressOptional.isPresent()) { 
 			address = addressOptional.get();
 		}else {
 			address = new Address();
 		}
-		
 		address.setActive(registrationFormDto.isActive());
 		address.setAddress1(registrationFormDto.getAddress1());
 		address.setAddress2(registrationFormDto.getAddress2());
@@ -83,7 +81,6 @@ public class RegistrationService {
 		address.setState(registrationFormDto.getState());
 		address.setUser(user);
 		addressRepository.save(address);
-		
 		return user;
 	}
 	

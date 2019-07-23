@@ -3,9 +3,6 @@ package com.lithan.sb.exceptions;
 
 public class IncorrectDateFormatException extends RuntimeException{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8270862013290118962L;
 	private String expectedPattern;
 	private String fieldName;
@@ -25,5 +22,4 @@ public class IncorrectDateFormatException extends RuntimeException{
 		sb.append("'.");
 		return super.getMessage();
 	}
-	
 }
