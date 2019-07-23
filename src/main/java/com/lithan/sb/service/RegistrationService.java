@@ -60,6 +60,8 @@ public class RegistrationService {
 			throw new IncorrectDateFormatException(GlobalConstants.DD_MM_YYYY, "Date Of Birth");
 		}
 		
+		userRepository.save(user);
+		
 		Address address = null;
 		
 		Optional<Address> addressOptional = addressRepository.findById(registrationFormDto.getAddressId());
@@ -80,13 +82,9 @@ public class RegistrationService {
 		address.setPrimaryAddr(registrationFormDto.isPrimaryAddr());
 		address.setState(registrationFormDto.getState());
 		address.setUser(user);
+		addressRepository.save(address);
 		
-		
-			
-		
-		
-		
-		return null;
+		return user;
 	}
 	
 }

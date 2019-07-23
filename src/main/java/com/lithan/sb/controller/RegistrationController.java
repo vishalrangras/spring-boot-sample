@@ -17,7 +17,7 @@ public class RegistrationController {
 	@Autowired
 	RegistrationService registrationService;
 	
-	@PostMapping("/register")
+	@PostMapping("/save")
 	public String registerUser(@RequestBody RegistrationFormDto registrationFormDto) {
 		try{
 			User user = registrationService.registerUser(registrationFormDto);
