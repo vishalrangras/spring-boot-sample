@@ -1,20 +1,17 @@
-package com.lithan.sb.app;
+package com.lithan.sb;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.lithan.sb.Application;
 import com.lithan.sb.constants.GlobalConstants;
 import com.lithan.sb.model.Address;
 import com.lithan.sb.model.Role;
@@ -28,20 +25,21 @@ import com.lithan.sb.repository.UserRepository;
 public class ApplicationTest {
 	
 	@Autowired
-	static RoleRepository roleRepository;
+	RoleRepository roleRepository;
 	
 	@Autowired
-	static UserRepository userRepository;
+	UserRepository userRepository;
 	
 	@Autowired
-	static AddressRepository addressRepository;
+	AddressRepository addressRepository;
 	
 	public static final SimpleDateFormat sdf = new SimpleDateFormat(GlobalConstants.DD_MM_YYYY);
 	
-	@BeforeClass
-	public static void beforeClass() throws ParseException{
+	
+	@Test
+	public void testRepositories() throws Exception{
 		
-		/*if(roleRepository.count()<=0) {
+		if(roleRepository.count()<=0) {
 			
 			List<Role> roleList = new ArrayList<>();
 			
@@ -57,10 +55,10 @@ public class ApplicationTest {
 			
 			role = new Role();
 			role.setRoleCode("Moderator");
-			role.setRoleName("Moderator User - having partial admin rights");
+			role.setRoleName("Community Moderator");
 			roleList.add(role);
 			roleRepository.saveAll(roleList);
-		}*/
+		}
 		
 		if(userRepository.count()<=0) {
 			
@@ -68,11 +66,11 @@ public class ApplicationTest {
 			
 			Role role = new Role();
 			role.setRoleCode("Admin");
-			role.setRoleName("Administrator");
+			//role.setRoleName("Administrator");
 			
 			Address address = new Address();
 			address.setActive(true);
-			address.setPrimary(true);
+			address.setPrimaryAddr(true);
 			address.setAddress1("Meryl Street");
 			address.setAddress2("Boulevard");
 			address.setArea("Pasedena");
@@ -87,6 +85,7 @@ public class ApplicationTest {
 			user.setUserName("daniel_joe");
 			user.setFirstName("Daniel");
 			user.setLastName("Joe");
+			user.setPassword("admin@456");
 			user.setDateOfBirth(sdf.parse("02/09/1986"));
 			user.setRole(role);
 			address.setUser(user);
@@ -95,7 +94,7 @@ public class ApplicationTest {
 			//2nd Address of 1st User
 			address = new Address();
 			address.setActive(true);
-			address.setPrimary(false);
+			address.setPrimaryAddr(false);
 			address.setAddress1("8375,");
 			address.setAddress2("North Golden Star Road ");
 			address.setArea("Winter Park");
@@ -111,11 +110,11 @@ public class ApplicationTest {
 			//2nd User
 			role = new Role();
 			role.setRoleCode("User");
-			role.setRoleName("Regular User");
+			//role.setRoleName("Regular User");
 			
 			address = new Address();
 			address.setActive(true);
-			address.setPrimary(true);
+			address.setPrimaryAddr(true);
 			address.setAddress1("79");
 			address.setAddress2("Joy Ridge St.");
 			address.setArea("Spiketurn");
@@ -129,6 +128,7 @@ public class ApplicationTest {
 			user.setUserName("jane_dunphy");
 			user.setFirstName("Jane");
 			user.setLastName("Dunphy");
+			user.setPassword("user@789");
 			user.setDateOfBirth(sdf.parse("27/02/1974"));
 			user.setRole(role);
 			address.setUser(user);
@@ -138,11 +138,11 @@ public class ApplicationTest {
 			//3rd User
 			role = new Role();
 			role.setRoleCode("Moderator");
-			role.setRoleName("Community Moderator");
+			//role.setRoleName("Community Moderator");
 			
 			address = new Address();
 			address.setActive(true);
-			address.setPrimary(true);
+			address.setPrimaryAddr(true);
 			address.setAddress1("855");
 			address.setAddress2("S. Amergie St.");
 			address.setArea("Mystic Grill");
@@ -156,16 +156,17 @@ public class ApplicationTest {
 			user.setUserName("gloria_pritchet");
 			user.setFirstName("Gloria");
 			user.setLastName("Pritchet");
+			user.setPassword("moderator@123");
 			user.setDateOfBirth(sdf.parse("14/02/1988"));
 			user.setRole(role);
 			address.setUser(user);
 			user.getAddressList().add(address);
 			userList.add(user);
+			
+			userRepository.saveAll(userList);
 		}
-	}
-	
-	@Test
-	public void testRepositories() {
+		
+		
 		List<User> userList = userRepository.findAll();
 		assertNotNull(userList);
 		

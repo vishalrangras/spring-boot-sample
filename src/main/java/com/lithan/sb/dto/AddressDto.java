@@ -17,6 +17,6 @@ public class AddressDto {
 	private String contactNo;
 	private String email;
 	private boolean active;
-	private boolean primary;
+	private boolean primaryAddr;
 	
 }
