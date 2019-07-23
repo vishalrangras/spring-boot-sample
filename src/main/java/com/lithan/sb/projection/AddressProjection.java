@@ -5,6 +5,7 @@ public interface AddressProjection {
 	public long getAddressId();
 	public String getUserFirstName();
 	public String getUserLastName();
+	public String getUserUserName();
 	public String getAddress1();
 	public String getCity();
 	public String getState();

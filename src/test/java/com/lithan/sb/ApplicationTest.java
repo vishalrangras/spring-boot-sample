@@ -1,27 +1,34 @@
 package com.lithan.sb;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.lithan.sb.constants.GlobalConstants;
+import com.lithan.sb.dto.UserDto;
 import com.lithan.sb.model.Address;
 import com.lithan.sb.model.Role;
 import com.lithan.sb.model.User;
+import com.lithan.sb.projection.AddressProjection;
 import com.lithan.sb.repository.AddressRepository;
 import com.lithan.sb.repository.RoleRepository;
 import com.lithan.sb.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
+@Service
 public class ApplicationTest {
 	
 	@Autowired
@@ -34,7 +41,6 @@ public class ApplicationTest {
 	AddressRepository addressRepository;
 	
 	public static final SimpleDateFormat sdf = new SimpleDateFormat(GlobalConstants.DD_MM_YYYY);
-	
 	
 	@Test
 	public void testRepositories() throws Exception{
@@ -85,7 +91,6 @@ public class ApplicationTest {
 			user.setUserName("daniel_joe");
 			user.setFirstName("Daniel");
 			user.setLastName("Joe");
-			user.setPassword("admin@456");
 			user.setDateOfBirth(sdf.parse("02/09/1986"));
 			user.setRole(role);
 			address.setUser(user);
@@ -128,7 +133,6 @@ public class ApplicationTest {
 			user.setUserName("jane_dunphy");
 			user.setFirstName("Jane");
 			user.setLastName("Dunphy");
-			user.setPassword("user@789");
 			user.setDateOfBirth(sdf.parse("27/02/1974"));
 			user.setRole(role);
 			address.setUser(user);
@@ -156,7 +160,6 @@ public class ApplicationTest {
 			user.setUserName("gloria_pritchet");
 			user.setFirstName("Gloria");
 			user.setLastName("Pritchet");
-			user.setPassword("moderator@123");
 			user.setDateOfBirth(sdf.parse("14/02/1988"));
 			user.setRole(role);
 			address.setUser(user);
@@ -169,13 +172,28 @@ public class ApplicationTest {
 		
 		List<User> userList = userRepository.findAll();
 		assertNotNull(userList);
-		
-		
+			
 		List<Role> roleList = roleRepository.findAll();
 		assertNotNull(roleList);
 		
 		List<Address> addressList = addressRepository.findAll();
 		assertNotNull(addressList);
+		
+		UserDto userDto = userRepository.findDtoedByUserName("daniel_joe", UserDto.class);
+		assertNotNull(userDto);
+		assertEquals("Daniel", userDto.getFirstName());
+		assertEquals("Admin", userDto.getRoleRoleCode());
+		
+		Optional<User> retrievedUserOptional = userRepository.findById("daniel_joe"); 
+		assertTrue(retrievedUserOptional.isPresent());
+		User retrievedUser = retrievedUserOptional.get();
+		assertEquals(2, retrievedUser.getAddressList().size());
+		
+		List<AddressProjection> addressProjectionList = addressRepository.findDtoedByUserUserName("jane_dunphy", AddressProjection.class);
+		assertNotNull(addressProjectionList);
+		assertEquals(1, addressProjectionList.size());
+		AddressProjection addressProjection = addressProjectionList.get(0);
+		assertEquals("jane_dunphy@thundermail.com", addressProjection.getEmail());
 	}
 
 }

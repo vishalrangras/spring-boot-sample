@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,14 +21,13 @@ public class User {
 	private String userName;
 	private String firstName;
 	private String lastName;
-	private String password;
 	
 	private Date dateOfBirth;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Address> addressList = new ArrayList<>();
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Role role;
 	
 	
