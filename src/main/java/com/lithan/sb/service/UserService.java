@@ -2,6 +2,8 @@ package com.lithan.sb.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import com.lithan.sb.repository.RoleRepository;
 import com.lithan.sb.repository.UserRepository;
 
 @Service
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional( rollbackFor = Exception.class)
 public class UserService {
 	
 	@Autowired
@@ -60,7 +62,7 @@ public class UserService {
 			throw new IncorrectDateFormatException(GlobalConstants.DD_MM_YYYY, "Date Of Birth");
 		}
 		
-		userRepository.save(user);
+		user = userRepository.save(user);
 		
 		Address address = null;
 		Optional<Address> addressOptional = addressRepository.findById(registrationFormDto.getAddressId());
@@ -82,6 +84,30 @@ public class UserService {
 		address.setUser(user);
 		addressRepository.save(address);
 		return user;
+	}
+	
+	public boolean initializeRoles() {
+		if(roleRepository.count()<=0) {
+			
+			List<Role> roleList = new ArrayList<>();
+			
+			Role role = new Role();
+			role.setRoleCode("Admin");
+			role.setRoleName("Administrator");
+			roleList.add(role);
+			
+			role = new Role();
+			role.setRoleCode("User");
+			role.setRoleName("Regular User");
+			roleList.add(role);
+			
+			role = new Role();
+			role.setRoleCode("Moderator");
+			role.setRoleName("Community Moderator");
+			roleList.add(role);
+			roleRepository.saveAll(roleList);
+		}
+		return true;
 	}
 	
 }

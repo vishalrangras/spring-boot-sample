@@ -22,17 +22,17 @@ public class SwaggerConfig {
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select().apis(RequestHandlerSelectors.basePackage("com.lithan.sb.controller"))
-                .paths(PathSelectors.regex("/user.*"))
+                .paths(PathSelectors.regex("/api.*"))
                 .build().apiInfo(apiInfo());
     }
 	
 	private ApiInfo apiInfo() {
 	    return new ApiInfo(
-	      "My REST API", 
-	      "Some custom description of API.", 
+	      "User Module API", 
+	      "API to register and manage users.", 
 	      "API TOS", 
-	      "Terms of service", 
-	      new Contact("John Doe", "www.example.com", "myeaddress@company.com"), 
-	      "License of API", "API license URL", Collections.emptyList());
+	      "Open source learning usage", 
+	      new Contact("John Doe", "www.lithan.com", "no-reply@lithan.com"), 
+	      "Open Source", "Open Source", Collections.emptyList());
 	}
 }
