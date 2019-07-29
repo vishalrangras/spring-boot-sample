@@ -189,7 +189,7 @@ public class ApplicationTest {
 		User retrievedUser = retrievedUserOptional.get();
 		assertEquals(2, retrievedUser.getAddressList().size());
 		
-		List<AddressProjection> addressProjectionList = addressRepository.findDtoedByUserUserName("jane_dunphy", AddressProjection.class);
+		List<AddressProjection> addressProjectionList = addressRepository.findAllProjectedByUserUserName("jane_dunphy", AddressProjection.class);
 		assertNotNull(addressProjectionList);
 		assertEquals(1, addressProjectionList.size());
 		AddressProjection addressProjection = addressProjectionList.get(0);

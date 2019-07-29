@@ -1,13 +1,12 @@
 package com.lithan.sb.dto;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class AddressDto {
 	
 	private long addressId;
-	private String userFirstName;
-	private String userLastName;
+	private String userUserName;
 	private String address1;
 	private String address2;
 	private String area;
