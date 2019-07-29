@@ -127,9 +127,22 @@ public class UserService {
 	}
 	
 	public String saveAddress(AddressDto addressDto) {
-		Address address = new Address();
-		if(addressDto.getAddressId()>0)
-			address.setAddressId(addressDto.getAddressId());
+		Address address = null;
+		if(addressDto.getAddressId()>0) {
+			Optional<Address> addressOptional = addressRepository.findById(addressDto.getAddressId());
+			if(addressOptional.isPresent()) 
+				address = addressOptional.get();
+		}
+		
+		if(address==null) {
+			address = new Address();
+			Optional<User> userOptional = userRepository.findById(addressDto.getUserUserName());
+			if(!userOptional.isPresent())
+				throw new UserNotFoundException(addressDto.getUserUserName());
+			User user = userOptional.get();
+			address.setUser(user);
+		}
+		
 		address.setActive(addressDto.isActive());
 		address.setAddress1(addressDto.getAddress1());
 		address.setAddress2(addressDto.getAddress2());
@@ -140,9 +153,7 @@ public class UserService {
 		address.setEmail(addressDto.getEmail());
 		address.setPrimaryAddr(addressDto.isPrimaryAddr());
 		address.setState(addressDto.getState());
-		User user = new User();
-		user.setUserName(addressDto.getUserUserName());
-		address.setUser(user);
+		addressRepository.save(address);
 		return "Address saved successfully for user: "+addressDto.getUserUserName();
 	}
 	

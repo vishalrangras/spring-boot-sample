@@ -63,7 +63,12 @@ public class UserController {
 	
 	@PostMapping("/saveaddress")
 	public String saveAddress(@RequestBody AddressDto addressDto) {
-		return userService.saveAddress(addressDto);
+		try {
+			return userService.saveAddress(addressDto);
+		}catch(Exception ex) {
+			return ex.getMessage();
+		}
+		
 	}
 	
 	@GetMapping("/listusers")
